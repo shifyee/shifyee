@@ -1,10 +1,11 @@
 import sys
 import asyncio
+import os
 from playwright.async_api import async_playwright
 
 async def main():
-    # Get the action from the issue title (e.g., "iphone_action:app_commits")
-    issue_title = sys.argv[1] if len(sys.argv) > 1 else ""
+    # Gets the title of the issue that was just opened (e.g. iphone_action:app_spotify)
+    issue_title = sys.argv[1] if len(sys.argv) > 1 else "iphone_action:home"
     
     action_map = {
         "iphone_action:power": "powerToggle()",
@@ -16,31 +17,36 @@ async def main():
         "iphone_action:app_weather": "openApp('weather')",
         "iphone_action:app_youtube": "openApp('youtube')"
     }
-
-    # Default to home if unrecognized
+    
     js_command = action_map.get(issue_title, "goHome()")
-
+    
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        # Set a viewport size that perfectly fits the phone
-        page = await browser.new_page(viewport={"width": 600, "height": 900})
+        # Sized specifically to fit the iPhone cleanly in the markdown
+        page = await browser.new_page(viewport={"width": 450, "height": 850}, device_scale_factor=2)
         
-        # Load your HTML file (make sure it's saved as dashboard.html in your repo root)
-        await page.goto("file:///github/workspace/iphone_dashboard_final.html")
+        # Load the HTML file from the GitHub workspace
+        workspace = os.getenv("GITHUB_WORKSPACE", os.getcwd())
+        file_path = f"file://{workspace}/iphone_dashboard_final.html"
         
-        # Wait for live data (weather, github stats) to load
-        await page.wait_for_timeout(2000) 
+        await page.goto(file_path)
         
-        # Execute the action the user clicked
+        # Give APIs (Weather, GitHub, Spotify image) time to load on the phone screen
+        await page.wait_for_timeout(3000) 
+        
+        # Tell the phone to click the app the user chose
         await page.evaluate(js_command)
         
-        # Wait for the smooth CSS animations to finish
-        await page.wait_for_timeout(1000)
+        # Wait for the screen transition animation to finish
+        await page.wait_for_timeout(1000) 
         
-        # Take a transparent screenshot of just the phone element
         phone_element = await page.query_selector("#phoneShell")
-        await phone_element.screenshot(path="assets/iphone_state.png", omit_background=True)
         
+        # Ensure the assets folder exists
+        os.makedirs("assets", exist_ok=True)
+        
+        # Take screenshot of just the phone with a transparent background
+        await phone_element.screenshot(path="assets/iphone_state.png", omit_background=True)
         await browser.close()
 
 if __name__ == "__main__":
