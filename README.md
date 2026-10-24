@@ -1,6 +1,6 @@
 # 👋 Hey there, I'm shifyee!
 
-Welcome to my GitHub! I'm a software developer and toolsmith. Instead of a standard list of stats, I built a **fully interactive virtual iPhone** that lives right here on my profile. 
+Welcome to my GitHub! I'm a software developer and youtuber. Instead of a standard list of stats, I built a **fully interactive virtual iPhone** that lives right here on my profile. 
 
 It starts powered off—feel free to turn it on, unlock it, and poke around my apps!
 
