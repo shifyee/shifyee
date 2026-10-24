@@ -43,5 +43,3 @@
 <p align="center"><sub><em>rendered by a terminal that doesn't exist, on a machine that does</em></sub></p>
 
 <br/>
-
-<details>
