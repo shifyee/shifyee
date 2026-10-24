@@ -3,14 +3,14 @@ name: Update iPhone Readme Dashboard
 on:
   issues:
     types: [opened]
-  workflow_dispatch: # Allows you to run it manually the very first time
+  workflow_dispatch:
 
 jobs:
   update-iphone-image:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # Allows bot to push the image
-      issues: write     # Allows bot to close the issue
+      contents: write
+      issues: write
       
     steps:
       - name: Checkout Repository
@@ -28,7 +28,6 @@ jobs:
           
       - name: Process State & Take Screenshot
         run: |
-          # Pass the clicked button to the python script
           python3 scripts/render_iphone.py "${{ github.event.issue.title }}"
           
       - name: Close Issue Automatically
@@ -37,10 +36,16 @@ jobs:
         with:
           comment: "Dashboard updated! Please check the README."
           
-      - name: Commit Updated Image
+      - name: Update README cache buster
+        run: |
+          TIMESTAMP=$(date +%s)
+          # Replaces the old timestamp query parameter with a new one to force GitHub to reload the image
+          sed -i -E "s/(iphone_state\.png\?v=)[0-9]+/\1$TIMESTAMP/" README.md || echo "No timestamp found, skipping replacement"
+          
+      - name: Commit Updated Image & README
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/iphone_state.png
-          git commit -m "update: interactive iphone state" || exit 0
+          git add assets/iphone_state.png README.md
+          git commit -m "update: interactive iphone state and bust cache" || exit 0
           git push
