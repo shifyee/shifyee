@@ -1,31 +1,37 @@
 name: Update iPhone Readme Dashboard
-
 on:
   issues:
     types: [opened]
 
 jobs:
-  update-iphone-svg:
+  update-iphone-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Process State Change Request
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
         run: |
-          # This runs a small python script (you will need to add to your repo) 
-          # to render the new phone screen state based on what button was clicked
-          python3 scripts/render_iphone_svg.py "${{ github.event.issue.title }}"
-
+          pip install playwright
+          playwright install chromium
+          
+      - name: Process State & Take Screenshot
+        run: |
+          python3 scripts/render_iphone.py "${{ github.event.issue.title }}"
+          
       - name: Close Issue Automatically
         uses: peter-evans/close-issue@v2
         with:
           comment: "Dashboard updated! Please check the README."
-
-      - name: Commit Updated SVG
+          
+      - name: Commit Updated Image
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/iphone_state.svg
+          git add assets/iphone_state.png
           git commit -m "update: interactive iphone state" || exit 0
           git push
