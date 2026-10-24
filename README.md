@@ -1,6 +1,6 @@
 <!-- iPhone 18 Pro Interactive Dashboard -->
 <div align="center">
-  <img src="https://raw.githubusercontent.com/shifyee/shifyee/main/assets/iphone_state.svg" width="400" alt="iPhone Dashboard"/>
+  <img src="https://raw.githubusercontent.com/shifyee/shifyee/main/assets/iphone_state.png" width="400" alt="iPhone Dashboard"/>
 
   <br/><br/>
 
