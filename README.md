@@ -18,7 +18,7 @@ This dashboard is updated in real-time using **GitHub Actions**. When you click 
 
 All you have to do is click **"Submit new issue"**. My automated bot will instantly read your command, click that button on the phone, take a new screenshot, and update the picture above! 
 
-*(Note: It might take 15-30 seconds for the GitHub Action to run and the image to update after you submit the issue.)*
+*(Note: It might take 15-30 seconds for the GitHub Action to run and the image might take 2-5 minutes to update after you submit the issue.)*
 
 #### 🎛️ System Controls
 * [🔌 **Power On / Off**](https://github.com/shifyee/shifyee/issues/new?title=powerToggle) - *Start here!*
