@@ -6,7 +6,7 @@ It starts powered off—feel free to turn it on, unlock it, and poke around my a
 
 <div align="center">
   
-  <img src="https://raw.githubusercontent.com/shifyee/shifyee/main/assets/iphone_state.png?v=1" width="400" alt="shifyee's Interactive iPhone Dashboard"/>
+  <img src="https://raw.githubusercontent.com/shifyee/shifyee/main/assets/iphone_state.png?v=1792878631" width="400" alt="shifyee's Interactive iPhone Dashboard"/>
 
 </div>
 
